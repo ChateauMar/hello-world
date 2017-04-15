@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title> CMPSCI4500 </title>
+<link rel="icon" type="image/x-icon" href="images/favicon-96x96.png" />
+<meta charset = "utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type = "text/css">
+body {
+    background-color: #981E32;
+}
+div.gpacalc {
+    width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 20px;
+	background-color: white;
+	padding: 10px;
+}
+table.header{
+	background-color: #981E32;
+}
+table.proj{
+	background-color: #EAAB00;
+	border-style: groove;
+	border-color: #981E92;
+	border-width: 0px;
+}
+h1 {
+    text-align: center;
+}
+h3 {
+    color: #981E32;
+    text-align: center;
+}
+ul li {
+	font-size: 16pt;
+	font-family: Arial;
+	font-weight: bold;
+	list-style: circle;
+}
+img.banner {
+    position:relative;
+	min-height:1px;
+	padding-right:15px;
+	padding-left:15px;
+	float: left;
+	width: 50%;
+}
+p.banner {
+	font-family: "Times New Roman";
+    font-size: 12pt;
+	text-align: center;
+    margin-top: 0mm;
+    margin-bottom: 0mm;	
+}
+table {
+   width:100%;
+   padding: 10px;
+}
+table.bottom{
+	border: 6px double black;
+	background-color: lightblue;
+}
+table.main{
+	width:50%;
+}
+
+th.bottom {
+	background-color: #981E32;
+	height:40px;
+	color: white;
+	border-bottom: 1px solid black;
+}
+th.bottom1 {
+	background-color: #4CAF50;
+	height:40px;
+	color: white;
+	border-bottom: 1px solid black;
+}
+td.bottom {
+	text-align: center;
+	padding: 15px;
+	border-bottom: 1px solid black;
+}
+td.bottom1{
+	background-color: #86f442;
+	text-align: center;
+	padding: 15px;
+	font-family: "Times New Roman";
+    font-size: 20pt;
+	border-bottom: 1px solid black;
+}
+tr.bottom:hover{
+	background-color:#f5f5f5
+}
+
+</style>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+
+var totalGpa = 0;
+var begGpa = 0;
+var text;
+var begHours = 0;
+var totalHours = 0;
+var begGradePoints = 0;
+var totalGradePoints = 0;
+var totalOneGradePoints = 0;
+var totalTwoGradePoints = 0;
+var totalThreeGradePoints = 0;
+var totalFourGradePoints = 0;
+var totalRepOneGradePoints = 0;
+
+var hoursCourseOne = 0;
+var creditCourseOne = 0;
+var gradePointsOne = 0;
+var creditOneHours = 0;
+var gradeOne = 0;
+var onePrevGrade =0;
+var oneHours = 0;
+var twoHours = 0;
+var threeHours = 0;
+var fourHours = 0;
+var oneProjGrade = 0;
+var twoProjGrade = 0;
+var threeProjGrade = 0;
+var fourProjGrade = 0;
+var newGpa = 0;
+var oneRepHours = 0;
+var repOne = false;
+
+//This functions shows the initial GPA
+//Gets the beginning hours and calculates Total Grade Points
+function showGpa() { 
+	//Get beginning GPA
+     totalGpa -= begGpa;
+     begGpa = document.details.gpa.value * 1;
+	 totalGpa += begGpa;
+	 
+	 //Print Projected GPA
+	 document.details.projectedgpa.value=" " + totalGpa.toFixed(2);
+	 
+	 //Alert
+	 text = "** Enter Hours";
+	 document.getElementById("gpahours").innerHTML = text;
+	
+	//Get beginning Credit hours and add to total hours
+	 totalHours -= begHours;
+	 begHours = document.details.units.value * 1;
+	 totalHours += begHours;
+	 
+	 //Calculate Grade Points	 
+	 totalGradePoints -= begGradePoints;
+	 begGradePoints = begGpa * begHours;
+	 totalGradePoints += begGradePoints;
+	 
+	 ///////////////////////////////////////////////
+	 //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test.value = "Total Hours: " + totalHours.toFixed(2);
+	 //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test1.value = "Beg GPoints: " + totalGradePoints.toFixed(2);
+	 ////////////////////////////////////////////////
+}
+function calcCourseOne(){
+	
+	 // Get Credit Hour 1 and add to Total Hours
+	 totalHours -= oneHours;
+	 oneHours = document.details.unitsOne.value * 1; 
+	 totalHours += oneHours;					 
+	 
+	 oneProjGrade = document.details.projGradeOne.value * 1; //Get ProjGrade
+	 
+	 // Calculate Credit 1 Grade Points  and add to Total Grade Points
+	 totalGradePoints -= totalOneGradePoints;
+	 totalOneGradePoints = oneProjGrade * oneHours; 
+	 totalGradePoints += totalOneGradePoints;
+	 	 
+	 newGpa = totalGradePoints / totalHours;
+	 document.details.projectedgpa.value=" " + newGpa.toFixed(2);
+	 
+	 
+	 //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test2.value = "Total +1 Hours: " + totalHours.toFixed(2);
+	  //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test3.value = "ProjGrade: " + oneProjGrade.toFixed(2);
+	 //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test4.value = "Total GPoints: " + totalGradePoints.toFixed(2);	 
+}
+
+function recReCalcCourseOne(){
+	if(document.details.repeatOne.value = "yes"){
+    	addReCalcCourseOne();
+	}
+	if(rdocument.details.repeatOne.value = "no"){
+	    removeReCalcCourseOne();	
+	}
+}
+function addReCalcCourseOne(){
+	
+    //totalHours -= oneRepHours;
+	oneRepHours = document.details.unitsOne.value * -1; 
+	totalHours += oneRepHours;					 
+
+    //Check repeat and get Previous Grade
+	
+	onePrevGrade = document.details.prevGradeOne.value * 1;
+	 
+	// Calculate Credit 1 Repeat Hours Gradepoints and decuct from Total Grade Points
+	
+	totalGradePoints -= totalRepOneGradePoints;
+	totalRepOneGradePoints = onePrevGrade * oneRepHours; 
+	totalGradePoints += totalRepOneGradePoints;
+	 
+	 	 	 
+	 newGpa = totalGradePoints / totalHours;
+	 document.details.projectedgpa.value=" " + newGpa.toFixed(2);
+
+	 
+	  //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+   document.details.test6.value = "Total Hours: " + totalHours.toFixed(2) + " h " + oneRepHours.toFixed(2);
+	 
+	 
+	 //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test5.value = "Prev Grade:" + onePrevGrade.toFixed(2);	
+}
+
+function removeReCalcCourseOne(){
+	totalHours -= oneRepHours;
+	//oneRepHours = document.details.unitsOne.value * -1; 
+	//totalHours += oneRepHours;					 
+
+    //Check repeat and get Previous Grade
+	
+	//onePrevGrade = document.details.prevGradeOne.value * 1;
+	 
+	// Calculate Credit 1 Repeat Hours Gradepoints and decuct from Total Grade Points
+	
+	totalGradePoints -= totalRepOneGradePoints;
+	totalRepOneGradePoints = onePrevGrade * oneRepHours * -1; 
+	totalGradePoints += totalRepOneGradePoints;
+	 
+	 	 	 
+	 newGpa = totalGradePoints / totalHours;
+	 document.details.projectedgpa.value=" " + newGpa.toFixed(2);
+
+	//(repOne == true) ? oneRepHours = //document.details.unitsOne.value * 1 : //oneRepHours = 0;
+	
+	//totalHours += oneRepHours;
+	//repOne == false;
+	
+	//totalHours += oneRepHours;
+	
+	//onePrevGrade = //document.details.prevGradeOne.value * 1;
+	 
+	// Calculate Credit 1 Repeat Hours Gradepoints and decuct from Total Grade Points
+	
+	//totalGradePoints -= totalRepOneGradePoints;
+	//totalRepOneGradePoints = onePrevGrade * oneRepHours; 
+	//totalGradePoints += totalRepOneGradePoints;
+	 
+	 	 	 
+	 //newGpa = totalGradePoints / totalHours;
+	 //document.details.projectedgpa.value=" " + //newGpa.toFixed(2);
+
+
+	 
+	  //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test6.value = "Total Hours: " + totalHours.toFixed(2) + " h " + oneRepHours.toFixed(2);
+	 
+	 //Check repeat and get Previous Grade
+	 //if(name="repeatOne" value="yes") then get
+	  onePrevGrade = document.details.prevGradeOne.value * 1;
+	 //TEST PRINT ONLY - DELETE BEFORE SUBMIT
+	 document.details.test5.value = "Prev Grade:" + onePrevGrade.toFixed(2);
+	 //
+	
+}
+
+function calcCourseTwo(){
+	 // Get Credit Hour 2 and add to Total Hours
+	 totalHours -= twoHours;
+	 twoHours = document.details.creditsTwo.value * 1; 
+	 totalHours += twoHours;						 
+	 
+	 twoProjGrade = document.details.projGradeTwo.value * 1; //Get ProjGrade
+	 
+	 // Calculate Credit 2 Grade Points  and add to Total Grade Points
+	 totalGradePoints -= totalTwoGradePoints;
+	 totalTwoGradePoints = twoProjGrade * twoHours; 
+	 totalGradePoints += totalTwoGradePoints;
+	 	 
+	 newGpa = totalGradePoints / totalHours;
+	 document.details.projectedgpa.value=" " + newGpa.toFixed(2);
+}
+function calcCourseThree(){
+	 // Get Credit Hour 3 and add to Total Hours
+	 totalHours -= threeHours;
+	 threeHours = document.details.creditsThree.value * 1; 
+	 totalHours += threeHours;						 
+	 
+	 threeProjGrade = document.details.projGradeThree.value * 1; //Get ProjGrade
+	 
+	 // Calculate Credit 3 Grade Points  and add to Total Grade Points
+	 totalGradePoints -= totalThreeGradePoints;
+	 totalThreeGradePoints = threeProjGrade * threeHours; 
+	 totalGradePoints += totalThreeGradePoints;
+	 	 
+	 newGpa = totalGradePoints / totalHours;
+	 document.details.projectedgpa.value=" " + newGpa.toFixed(2);
+}
+function calcCourseFour(){
+	 // Get Credit Hour 4 and add to Total Hours
+	 totalHours -= fourHours;
+	 fourHours = document.details.creditsFour.value * 1; 
+	 totalHours += fourHours;						 
+	 
+	 fourProjGrade = document.details.projGradeFour.value * 1; //Get ProjGrade
+	 
+	 // Calculate Credit 4 Grade Points  and add to Total Grade Points
+	 totalGradePoints -= totalFourGradePoints;
+	 totalFourGradePoints = fourProjGrade * fourHours; 
+	 totalGradePoints += totalFourGradePoints;
+	 	 
+	 newGpa = totalGradePoints / totalHours;
+	 document.details.projectedgpa.value=" " + newGpa.toFixed(2);
+}
+
+</script>
+
+ </head>
+
+ <body>
+<!-- UMSL Banner -->
+   <table class="header">
+     <tr><td>
+        <img class="banner" src="images/logo-header.gif"  alt="UMSL Header"/>
+     </td></tr>
+   </table> 
+
+<!-- GPA Calculataor Section -->   
+<div class="gpacalc">
+   
+
+   	<table class="proj">
+     <tr><td>
+		<h3>CS4500 Project </h3>
+		<h1>Calculate your projected GPA </h1>
+		
+		<hr color="#981E92" />
+	</td></tr>
+    </table>
+
+	
+
+	
+<form name = "details" >
+
+<!-- Beginning of Test -->
+<p > TEST PRINT
+<input type="text" name="test" 	size="20" style=" border-style: none;   border-color:inherit; background-color: Transparent; text-align: center;
+padding: 1px; font-family: Times New Roman; font-size: 12pt;"  text="0" />  </p>
+<p> TEST PRINT:
+<input type="text" name="test1" 
+			size="20"
+            style=" border-style: none; 
+			        border-color:inherit; 
+					background-color: Transparent;
+					text-align: center;
+					padding: 1px;
+					font-family: Times New Roman;
+					font-size: 12pt;" 
+			 text="0" />  </p>
+<p> TEST PRINT:
+<input type="text" name="test2" 
+			size="20"
+            style=" border-style: none; 
+			        border-color:inherit; 
+					background-color: Transparent;
+					text-align: center;
+					padding: 1px;
+					font-family: Times New Roman;
+					font-size: 12pt;" 
+			 text="0" />  </p>
+<p > TEST PRINT
+<input type="text" name="test3" 	size="20" style=" border-style: none;   border-color:inherit; background-color: Transparent; text-align: center;
+padding: 1px; font-family: Times New Roman; font-size: 12pt;"  text="0" />  </p>
+<p > TEST PRINT
+<input type="text" name="test4" 	size="20" style=" border-style: none;   border-color:inherit; background-color: Transparent; text-align: center;
+padding: 1px; font-family: Times New Roman; font-size: 12pt;"  text="0" />  </p>
+<p > TEST PRINT
+<input type="text" name="test5" 	size="20" style=" border-style: none;   border-color:inherit; background-color: Transparent; text-align: center;
+padding: 1px; font-family: Times New Roman; font-size: 12pt;"  text="0" />  </p>
+<p > TEST PRINT
+<input type="text" name="test6" 	size="20" style=" border-style: none;   border-color:inherit; background-color: Transparent; text-align: center;
+padding: 0px; font-family: Times New Roman; font-size: 10pt;"  text="0" />  </p>
+<!-- End of Test -->
+
+<br>
+
+<table>
+	<tr><td>
+	
+	</td></tr>
+	
+    <tr><td>
+	Please enter your current GPA:
+	<hr>
+	</td><td>
+	<input type="number" min="1" max ="4" size="4" name="gpa" value="" onchange="showGpa()">
+	</td><td>
+	 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  
+			&nbsp &nbsp &nbsp &nbsp &nbsp 
+	</td></tr>
+	
+	<tr><td>
+	Enter the number of units you have attempted (not counting the current semester):
+	<hr>
+	</td><td>
+	<input type="number" min="1" max = "600" size="4" name="units" value="" onchange="showGpa()">
+	</td><td>
+	<span id="gpahours"></span>
+	</td></tr>
+</table>
+<br>
+<table>
+	<tr><td>
+	Please enter your current Fall (or Spring) Schedule along with projected grades for each class.<br>
+	</td></tr>
+</table>
+
+<table>
+<!-- First Header Row -->
+	 <tr>
+	 <th class = "bottom">Courses</th>
+	 <th class = "bottom">Credits</th>
+	 <th class = "bottom">Repeat? </th>
+	 <th class = "bottom">Previous Grade </th>
+	 <th class = "bottom">Projected Grade </th>
+	 <th class = "bottom1">Projected GPA </th>
+	 </tr>
+	 <!-- Second Row Course 1 -->
+	 <tr>
+	 <td class = "bottom">Course 1</td>
+	 <td class = "bottom">
+		<select name="unitsOne" onchange="calcCourseOne()" >
+			<option value="   ">  </option>
+			<option value="1">1.0</option>
+			<option value="2">2.0</option>
+			<option value="3">3.0 </option>
+			<option value="4">4.0</option>
+			<option value="5">5.0 </option>
+			<option value="6">6.0</option>
+		</select>
+	 </td>
+	 <td class = "bottom"> 
+		<input type="radio" name="repeatOne" value="yes" onchange="recReCalcCourseOne()"> Yes<br>
+		<input type="radio" name="repeatOne" value="no" onchange="recReCalcCourseOne()" checked> No<br>
+	  </td>
+	 <td class = "bottom">
+	     <select name="prevGradeOne" onchange="recReCalcCourseOne()">
+			<option value="   ">  </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1.0">D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+			<option value="0"  >FN</option>
+		</select>
+	 </td>
+	 <td class = "bottom">
+		<select name="projGradeOne" onchange="calcCourseOne()">
+			<option value="   ">  </option>
+			<option value="4"  >A </option>
+			<option value="3.7">A-</option>
+			<option value="3.3">B+</option>
+			<option value="3"  >B </option>
+			<option value="2.7">B-</option>
+			<option value="2.3">C+</option>
+			<option value="2"  >C </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+		</select>
+	 </td>
+	 
+	 <!-- CALCULATED PROJECTED GPA -->
+	 <td class = "bottom1" rowspan = "4">
+	 
+     <input type="text" name="projectedgpa" 
+			size="1"
+            style=" border-style: none; 
+			        border-color:inherit; 
+					background-color: Transparent;
+					text-align: center;
+					padding: 10px;
+					font-family: Times New Roman;
+					font-size: 30pt;" 
+			 text="0" />
+	 </td>
+	 
+	</tr>
+	
+	 <!-- Third Row Course 2 -->
+	
+	 <tr>
+	 <td class = "bottom">Course 2</td>
+	 <td class = "bottom">
+		<select name="creditsTwo" onchange="calcCourseTwo()">
+			<option value="   ">  </option>
+			<option value="1">1.0</option>
+			<option value="2">2.0</option>
+			<option value="3">3.0 </option>
+			<option value="4">4.0</option>
+			<option value="5">5.0 </option>
+			<option value="6">6.0</option>
+		</select>
+	 </td>
+	 <td class = "bottom"> 
+		<input type="radio" name="repeatTwo" value="yes"> Yes<br>
+		<input type="radio" name="repeatTwo" value="no" checked> No<br>
+	  </td>
+	 <td class = "bottom">
+	     <select name="prevGradeTwo" onchange="calcCourseTwo()">
+			<option value="   ">  </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+			<option value="0"  >FN</option>
+		</select>
+	 </td>
+	 <td class = "bottom">
+		<select name="projGradeTwo" onchange="calcCourseTwo()">
+			<option value="   ">  </option>
+			<option value="4"  >A </option>
+			<option value="3.7">A-</option>
+			<option value="3.3">B+</option>
+			<option value="3"  >B </option>
+			<option value="2.7">B-</option>
+			<option value="2.3">C+</option>
+			<option value="2"  >C </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+		</select>
+	 </td>
+	 
+	</tr>
+	 
+	  <!-- Fourth Row Course 3 -->
+<tr>
+	 <td class = "bottom">Course 3</td>
+	 <td class = "bottom">
+		<select name="creditsThree" onchange="calcCourseThree()">
+			<option value="   ">  </option>
+			<option value="1">1.0</option>
+			<option value="2">2.0</option>
+			<option value="3">3.0 </option>
+			<option value="4">4.0</option>
+			<option value="5">5.0 </option>
+			<option value="6">6.0</option>
+		</select>
+	 </td>
+	 <td class = "bottom"> 
+		<input type="radio" name="repeatThree" value="yes"> Yes<br>
+		<input type="radio" name="repeatThree" value="no" checked> No<br>
+	  </td>
+	 <td class = "bottom">
+	     <select name="prevGradeThree" onchange="calcCourseThree()">
+			<option value="   ">  </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+			<option value="0"  >FN</option>
+		</select>
+	 </td>
+	 <td class = "bottom">
+		<select name="projGradeThree" onchange="calcCourseThree()">
+			<option value="   ">  </option>
+			<option value="4"  >A </option>
+			<option value="3.7">A-</option>
+			<option value="3.3">B+</option>
+			<option value="3"  >B </option>
+			<option value="2.7">B-</option>
+			<option value="2.3">C+</option>
+			<option value="2"  >C </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+		</select>
+	 </td>
+	 
+	</tr>	
+
+       <!-- Fourth Row Course 4 -->
+	   <tr>
+	 <td class = "bottom">Course 4</td>
+	 <td class = "bottom">
+		<select name="creditsFour" onchange="calcCourseFour()">
+			<option value="   ">  </option>
+			<option value="1">1.0</option>
+			<option value="2">2.0</option>
+			<option value="3">3.0 </option>
+			<option value="4">4.0</option>
+			<option value="5">5.0 </option>
+			<option value="6">6.0</option>
+		</select>
+	 </td>
+	 <td class = "bottom"> 
+		<input type="radio" name="repeatFour" value="yes"> Yes<br>
+		<input type="radio" name="repeatFour" value="no" checked> No<br>
+	  </td>
+	 <td class = "bottom">
+	     <select name="prevGradeFour" onchange="calcCourseFour()">
+			<option value="   ">  </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+			<option value="0"  >FN</option>
+		</select>
+	 </td>
+	 <td class = "bottom">
+		<select name="projGradeFour" onchange="calcCourseFour()">
+			<option value="   ">  </option>
+			<option value="4"  >A </option>
+			<option value="3.7">A-</option>
+			<option value="3.3">B+</option>
+			<option value="3"  >B </option>
+			<option value="2.7">B-</option>
+			<option value="2.3">C+</option>
+			<option value="2"  >C </option>
+			<option value="1.7">C-</option>
+			<option value="1.3">D+</option>
+			<option value="1"  >D </option>
+			<option value="0.7">D-</option>
+			<option value="0"  >F </option>
+		</select>
+	 </td>
+	 
+	</tr>
+	
+	   <!-- Fifth Row Course 5 -->
+
+	
+	
+	
+
+</table>
+
+<p class="banner"><input type="reset"  value = "Reset / Start Over"/></p>
+</form>
+<!-- End of Form/Input fields -->
+
+<br>
+<br>
+	<strong>Please note:</strong> <i>This calculator is unofficial.  Please consult with a College Adviser to discuss clearing probation and to verify your projected GPA.</i>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+</div>
+
+</body>
+</html>
